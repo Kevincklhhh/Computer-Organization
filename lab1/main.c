@@ -5,26 +5,26 @@
 void encode(char buff[]){//3 pointers
     char temp[100];//temporary array used to store "buff"
     strncpy(temp,buff,100);
-    char * WordFinder = temp;//pointer that iterates through "buff"
-    char * WordCopier = temp;
-    char * WordPaster = buff;
+    char * WordFinder = temp;//pointer that iterates through "temp"
+    char * WordCopier = temp;//pointer that iterates through "temp", goes back in reverse on each word
+    char * WordPaster = buff;//pointer that copies value from WordCopier to "buff"
 
     int n;
         while (*WordFinder != '\0') {
             n = 0;
-            while (isalpha(*WordFinder) != 0 && *WordFinder != '\0') {
+            while (isalpha(*WordFinder) != 0 && *WordFinder != '\0') {//stops after the first word
                 WordFinder++;
                 n++;
 
             }
             WordCopier = WordFinder;
 
-            for (int a = 0; a < n; a++) {
+            for (int a = 0; a < n; a++) {//copies the word from "temp" into "buff", notice that the order is reversed
                 WordCopier--;
                 *WordPaster = toupper(*WordCopier);
                 WordPaster++;
             }
-            *WordPaster = ' ';//
+            *WordPaster = ' ';//replace special char with space
             WordPaster++;
             WordFinder++;
         }
