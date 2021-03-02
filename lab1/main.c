@@ -24,9 +24,12 @@ void encode(char buff[]){//3 pointers
                 *WordPaster = toupper(*WordCopier);
                 WordPaster++;
             }
-            *WordPaster = ' ';//replace special char with space
+            if (*WordPaster == '_'){
+                *WordPaster = ' ';//replace special char with space
+            }
             WordPaster++;
             WordFinder++;
+
         }
 
 
@@ -39,10 +42,7 @@ int main() {
         perror("error opening file");
     }
     while(fgets(buff,100,fin)!=NULL){
-        printf("%d\n", sizeof(buff));
-        for (int a = 0; a < sizeof(buff); a++) {printf("%c\n", buff[a]);}
         encode(buff);
-        printf("%c\n", 'o');
         fputs(buff,fout);
     }
     fclose(fin);
