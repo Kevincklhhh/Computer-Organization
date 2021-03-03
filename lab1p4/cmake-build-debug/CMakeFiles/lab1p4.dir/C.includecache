@@ -6,11 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/Users/kevincui/CLionProjects/lab1p4/main.c
+C:/Users/Kailai Cui/CLionProjects/Computer-Organization/lab1p4/main.c
 stdio.h
 -
 string.h
 -
 stdlib.h
+-
+ctype.h
 -
 
