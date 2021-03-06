@@ -1,3 +1,6 @@
+/*
+ * Programmer: Kailai Cui. This program defines and runs three functions as required by lab1 part2 q2.
+ */
 #include <stdio.h>
 void intSum(){//asks for two integers and outputs them and their sum.
     int a,b,c;

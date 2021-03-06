@@ -1,3 +1,8 @@
+/*
+ * Programmer: Kailai Cui. This program reads the message, reverse each
+“word” in the phrase where words are separated by one or more non-alphabetic characters; and
+keep each non-alphabetic character in their original position. I use a temp array and three pointers to read "words" and modify the input string.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

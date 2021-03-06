@@ -1,3 +1,6 @@
+/*
+ * Programmer: Kailai Cui. This program defines and runs three functions as required by lab1 part 2 q1.
+ */
 #include <stdio.h>
 void printHalf(){//print the string: One half is 50%
     printf("One half is 50 %%\n");

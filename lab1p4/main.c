@@ -37,7 +37,6 @@ void insertAtTheEnd(struct Linkedlist* LL, char ele[]){//insert a node into the 
     struct node *cur_node = LL->head;
     while(cur_node->next != NULL){//goes to the end of linked list
         cur_node = cur_node->next;
-        //printf("%s","fuck");
     }
     cur_node->next = newNode;
 
@@ -87,7 +86,6 @@ int main(int argc, char** argv) {
     Linked_list->head = (struct node*)malloc(sizeof(struct node));//creates head node
     Linked_list->head->next = NULL;
     Linked_list->head->data = NULL;
-
     for (int i = 1; i < argc; i++) {//iterates through program argument
         if (isupper(argv[i][0]) != 0){//if letter is uppercase
             if(findNode(*Linked_list,argv[i]) != 0){//delete if it the word exists
@@ -103,12 +101,6 @@ int main(int argc, char** argv) {
             }
         }
     }
-    /*
-    insertAtBeginning(Linked_list,"hello");
-    insertAtTheEnd(Linked_list,"haha");
-    printf("%d",findNode(*Linked_list,"haha"));
-    deleteNode(Linked_list,"haha");
-     */
     displayLinkedList(*Linked_list);
 
     return 0;
