@@ -1,5 +1,5 @@
 /*
- * Programmer: Kailai Cui. This program implements a linked list using struct "node", which has a pointer to next node and a pointer to its data.
+ * Programmer: Kailai Cui, Ruoqing Yao. This program implements a linked list using struct "node", which has a pointer to next node and a pointer to its data.
  * The program implements some linked list functions, including  insertAtBeginning, insertAtTheEnd, findNode, deleteNode and displayLinkedList.
  * The main function reads argument from terminal. Then, it inserts the arguments that start with an uppercase letter at the beginning of the Linked List.
  * It inserts the arguments that start with a lowercase letter at the end of the Linked List. Before inserting, it checks if the word exist in the Linked List. If yes, it deletes the node.
@@ -75,11 +75,13 @@ void displayLinkedList(struct Linkedlist LL){//prints all nodes of the linked li
     printf("%s","The list:- ");
     while(cur_node->next != NULL){//iterates through the linked list
         cur_node = cur_node->next;
-        fprintf( stderr, "%s", cur_node->data );//print node data
+        printf("%s", cur_node->data );//print node data
         if (cur_node->next != NULL){
             printf("%s",", ");//print a comma and space between each node's value
         }
+
     }
+    printf("\n");
 }
 int main(int argc, char** argv) {
     struct Linkedlist *Linked_list= (struct Linkedlist*)malloc(sizeof(struct Linkedlist));//initialize the linked list
@@ -101,7 +103,9 @@ int main(int argc, char** argv) {
             }
         }
     }
-    displayLinkedList(*Linked_list);
-
+    if(argc == 1){//if no argument is given
+        printf("%s","The program must read at least an argument.\n");
+    }else{
+        displayLinkedList(*Linked_list);}
     return 0;
 }
