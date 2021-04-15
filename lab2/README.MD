@@ -1,0 +1,2 @@
+Kailai Cui, Ruoqing Yao  
+We discussed some of the problems and solved them together. For other problems, we solved them independently. We spent ~8hrs on the lab. They are quite difficult. To solve them by ourselves, we need solid knowledge of bit-level operations as well as intelligence.
