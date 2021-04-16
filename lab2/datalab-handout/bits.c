@@ -184,7 +184,7 @@ int isEqual(int x, int y) {
  *   Rating: 3
  */
 int bitMask(int highbit, int lowbit) {
-    return ((~0)<<lowbit)&((~0)+(1<<highbit<<1));
+    return ((~0)<<lowbit)&((~0)+(1<<highbit<<1));//first get a value with low bits of 0, and a value of high bit 0.
 }
 /*
  * reverseBytes - reverse the bytes of x
@@ -198,7 +198,7 @@ int reverseBytes(int x) {
     int byte2 = ((x >> 16) & 0xFF) << 8;
     int byte3 = ((x >> 8) & 0xFF) << 16;
     int byte4 = (x & 0xFF) << 24;
-    return byte1 + byte2 + byte3 + byte4;
+    return byte1 + byte2 + byte3 + byte4;//get 4 bytes, and add them together
 }
 /*
  * bang - Compute !x without using !
@@ -208,7 +208,7 @@ int reverseBytes(int x) {
  *   Rating: 4
  */
 int bang(int x) {
-    return ~(x|(~x+1))>>31&1;
+    return ~(x|(~x+1))>>31&1;//convert x to negative if x is positive, and negative value has MSB 1.
 }
 /*
  * leastBitPos - return a mask that marks the position of the
@@ -219,7 +219,7 @@ int bang(int x) {
  *   Rating: 2
  */
 int leastBitPos(int x) {
-    return (((x+~0)^x)&x);
+    return (((x+~0)^x)&x);//x-1 XOR with x, AND with x.
 }
 /*
  * minusOne - return a value of -1
@@ -228,7 +228,7 @@ int leastBitPos(int x) {
  *   Rating: 1
  */
 int minusOne(void) {
-    return ~0;
+    return ~0;//this gives -1
 }
 /*
  * TMax - return maximum two's complement integer
@@ -237,7 +237,7 @@ int minusOne(void) {
  *   Rating: 1
  */
 int tmax(void) {
-    return ~(1<<31);
+    return ~(1<<31);//return max b2t value
 }
 /*
  * fitsBits - return 1 if x can be represented as an
@@ -249,7 +249,7 @@ int tmax(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-    x = x >> (n+~1+1);
+    x = x >> (n+~1+1);//shift x, and test if all bits are 0 or all bits are 1.
     return !~x|!x;
 }
 /* 
@@ -261,7 +261,7 @@ int fitsBits(int x, int n) {
  *   Rating: 3
  */
 int addOK(int x, int y) {
-    return (((x^y)>>31)|~(((x+y)^x)>>31))&1;
+    return (((x^y)>>31)|~(((x+y)^x)>>31))&1;//test if MSB of sum is same x or y's.
 }
 /* 
  * isGreater - if x > y  then return 1, else return 0 
@@ -271,9 +271,9 @@ int addOK(int x, int y) {
  *   Rating: 3
  */
 int isGreater(int x, int y) {
-    int sign_ = ((~x&y)>>31)&1;
-    int mark_ = ~((x^y)>>31);
-    int equl_ = !!(x^y);
+    int sign_ = ((~x&y)>>31)&1;//if x,y have different sign
+    int mark_ = ~((x^y)>>31);//if x,y have same sign
+    int equl_ = !!(x^y);//if x,y are equal
     return sign_ | ((mark_)&(~(x+~y+1))>>31&equl_);
 }
 /* 
@@ -298,8 +298,8 @@ int isNegative(int x) {
  *   Rating: 3
  */
 int multFiveEighths(int x) {
-    int fivex= (x<<2)+x;
-    return (fivex + ((fivex >> 31) & ((1 << 3) + ~0))) >> 3;
+    int fivex= (x<<2)+x;//multiply by 5
+    return (fivex + ((fivex >> 31) & ((1 << 3) + ~0))) >> 3;//divide by 8, round down or up
 
 }
 /* 
@@ -311,7 +311,8 @@ int multFiveEighths(int x) {
  *   Rating: 4
  */
 int sm2tc(int x) {
-    return 2;
+    int sign = x>>31;
+    return (sign&(~(x+~((~0)<<31)+1)+1))|(~sign&x);//no need to change if sign bit is 0. Otherwise, invert bits and add 1.
 }
 /* 
  * float_i2f - Return bit-level equivalent of expression (float) x
@@ -323,20 +324,20 @@ int sm2tc(int x) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
-    int s_ = x&0x80000000;
+    int s_ = x&0x80000000;//sign bit
     int n_ = 30;
     if(!x) return 0;
     if(x==0x80000000) return 0xcf000000;
     if(s_) x = ~x+1;
-    while(!(x&(1<<n_))) n_--;
-    if(n_<=23) x<<=(23-n_);
-    else{
+    while(!(x&(1<<n_))) n_--;//find MSB
+    if(n_<=23) x<<=(23-n_);//shift left
+    else{//shift right, need to consider round down or up
         x+=(1<<(n_-24));
         if(x<<(55-n_)) ;else x&=(0xffffffff<<(n_-22));
         if(x&(1<<n_))  ;else n_++;
         x >>= (n_-23);
     }
-    x=x&0x007fffff;
+    x=x&0x007fffff;//lowest bit to 0
     n_=(n_+127)<<23;
-    return x|n_|s_;
+    return x|n_|s_;//put together
 }
