@@ -12,12 +12,69 @@ Done:  .long 0xFFFFFFFF
 
 Main:	pushl %ebp 
 	rrmovl %esp,%ebp
+    
+    irmovl	$-16, %esi
+    andl %esp,%ebp
+	irmovl $48, %esi #top of stack frame, allocate mem space
+	subl %esi, %esp
+	
+	irmovl Input, %esi
+	rmmovl %esi, 44(%esp)
+	jmp	L2
+L7:#loop 1 entry
+	mrmovl	44(%esp), %eax
+	mrmovl	(%eax), %eax
+	rmmovl	%eax, 40(%esp)
+	irmovl  $1, %esi
+	rmmovl	%esi, 36(%esp)#factor = 1
+	jmp	L3
+L6:#loop 2 entry
+	mrmovl	40(%esp), %eax
+	rmmovl	%eax, 32(%esp)
+	mrmovl	36(%esp), %eax
+	rmmovl	%eax, 28(%esp)
+	jmp	L4
+L5:
+	mrmovl	28(%esp), %eax
+	mrmovl  36(%esp), %esi
+	addl  	%eax, %esi
+	rmmovl 	%esi, 36(%esp)
 
+	irmovl	$1, %esi#local--
+	mrmovl  32(%esp), %edi
+	subl	%esi, %edi 
+	rmmovl 	%edi, 32(%esp)
+L4:
+	irmovl  $1, %esi
+	mrmovl  32(%esp), %edi
+	subl  %esi, %edi
+	jg	L5
+	irmovl	$1, %esi#l_local--
+	mrmovl  40(%esp), %edi
+	subl	%esi, %edi 
+	rmmovl 	%edi, 40(%esp)
+L3:
+	irmovl  $0, %esi
+	mrmovl  40(%esp), %edi
+	subl   %esi, %edi
+	jne	L6#loop 2 condition
+	irmovl	$4, %esi
+	mrmovl  44(%esp), %edi
+	addl	%esi, %edi 
+	rmmovl 	%edi, 44(%esp)
+	mrmovl 36(%esp), %eax#store ret value in eax, 后面三行ignore
+
+L2:
+	mrmovl	44(%esp), %eax
+	mrmovl	(%eax), %eax
+	irmovl  $-1, %esi
+	subl	%esi, %eax#set condition code
+	jne	L7#loop 1 condition
 
 	rrmovl %ebp,%esp
 	popl %ebp
 	ret 
-
+	
 # The stack starts here and grows to lower addresses
 	.pos 0x1000		
 Stack:	 
