@@ -1,0 +1,108 @@
+	.file	"lab3p2.c"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+	leal	4(%esp), %ecx
+	andl	$-16, %esp
+	pushl	-4(%ecx)
+	pushl	%ebp
+	movl	%esp, %ebp
+	pushl	%ecx
+	subl	$36, %esp
+	movl	$2, -36(%ebp)
+	movl	$4, -32(%ebp)
+	movl	$5, -28(%ebp)
+	movl	$3, -24(%ebp)
+	movl	$6, -20(%ebp)
+	movl	$2, -16(%ebp)
+	movl	$3, -12(%ebp)
+	subl	$8, %esp
+	pushl	-12(%ebp)
+	leal	-36(%ebp), %eax
+	pushl	%eax
+	call	get_pair
+	addl	$16, %esp
+	nop
+	movl	-4(%ebp), %ecx
+	leave
+	leal	-4(%ecx), %esp
+	ret
+	.size	main, .-main
+	.globl	get_pair
+	.type	get_pair, @function
+get_pair:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$24, %esp
+	movl	$1, -12(%ebp)
+	jmp	.L3
+.L4:
+	movl	8(%ebp), %eax
+	addl	$4, %eax
+	movl	(%eax), %edx
+	movl	8(%ebp), %eax
+	movl	(%eax), %eax
+	subl	$8, %esp
+	pushl	%edx
+	pushl	%eax
+	call	raise2pwr
+	addl	$16, %esp
+	movl	%eax, -16(%ebp)
+	addl	$8, 8(%ebp)
+	addl	$1, -12(%ebp)
+.L3:
+	movl	-12(%ebp), %eax
+	cmpl	12(%ebp), %eax
+	jle	.L4
+	nop
+	leave
+	ret
+	.size	get_pair, .-get_pair
+	.globl	raise2pwr
+	.type	raise2pwr, @function
+raise2pwr:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$24, %esp
+	movl	$1, -16(%ebp)
+	movl	$1, -12(%ebp)
+	jmp	.L6
+.L7:
+	subl	$8, %esp
+	pushl	8(%ebp)
+	pushl	-16(%ebp)
+	call	mul_op
+	addl	$16, %esp
+	movl	%eax, -16(%ebp)
+	addl	$1, -12(%ebp)
+.L6:
+	movl	-12(%ebp), %eax
+	cmpl	12(%ebp), %eax
+	jle	.L7
+	movl	-16(%ebp), %eax
+	leave
+	ret
+	.size	raise2pwr, .-raise2pwr
+	.globl	mul_op
+	.type	mul_op, @function
+mul_op:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$16, %esp
+	movl	8(%ebp), %eax
+	movl	%eax, -4(%ebp)
+	jmp	.L10
+.L11:
+	movl	8(%ebp), %eax
+	addl	%eax, -4(%ebp)
+	subl	$1, 12(%ebp)
+.L10:
+	cmpl	$1, 12(%ebp)
+	jg	.L11
+	movl	-4(%ebp), %eax
+	leave
+	ret
+	.size	mul_op, .-mul_op
+	.ident	"GCC: (Ubuntu 7.4.0-1ubuntu1~18.04.1) 7.4.0"
+	.section	.note.GNU-stack,"",@progbits

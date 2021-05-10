@@ -10,84 +10,111 @@ Input: .long 0x5
        .long 0x3
 Done:  .long 0xFFFFFFFF
 
-Main:	pushl %ebp 
+Main:
+	leal	4(%esp), %ecx
+	andl	$-16, %esp
+	pushl	-4(%ecx)#需修改
+	pushl %ebp 
 	rrmovl %esp,%ebp
     andl	$-16, %esp
-	subl	$48, %esp
-	call	___main
-	movl	$2, 20(%esp)
-	movl	$4, 24(%esp)
-	movl	$5, 28(%esp)
-	movl	$3, 32(%esp)
-	movl	$6, 36(%esp)
-	movl	$2, 40(%esp)
-	movl	$3, 44(%esp)
-	movl	44(%esp), %eax
-	movl	%eax, 4(%esp)
-	leal	20(%esp), %eax
-	movl	%eax, (%esp)
+	subl	$36, %esp#需修改
+    irmovl  $2, %esi
+	rmmovl	%esi, -36(%esp)
+	irmovl  $4, %esi
+	rmmovl	%esi, -32(%esp)
+	irmovl  $5, %esi
+	rmmovl	%esi, -28(%esp)
+	irmovl  $3, %esi
+	rmmovl	%esi, -24(%esp)
+	irmovl  $6, %esi
+	rmmovl	%esi, -20(%esp)
+	irmovl  $2, %esi
+	rmmovl	%esi, -16(%esp)
+	irmovl  $3, %esi
+	rmmovl	%esi, -12(%esp)
+    subl	$8, %esp
+	pushl	-12(%ebp)
+	leal	-36(%ebp), %eax
+	pushl	%eax
 	call	_get_pair
+    addl	$16, %esp#修
 	nop
-	leave
+    movl	-4(%ebp), %ecx#修
+	rrmovl %ebp, %esp
+    popl %ebp
+    leal	-4(%ecx), %esp#修
 	ret
 	.globl	_get_pair
 	.def	_get_pair;	.scl	2;	.type	32;	.endef
 _get_pair:
 	pushl	%ebp
-	movl	%esp, %ebp
-	subl	$40, %esp
-	movl	$1, -12(%ebp)
+	rrmovl	%esp, %ebp
+    irmovl  $40, %esi 
+	subl    %esi, %esp
+	irmovl  $1, %esi
+	rmmovl	%esi, -12(%esp)
 	jmp	L3
 L4:
-	movl	8(%ebp), %eax
-	addl	$4, %eax
-	movl	(%eax), %edx
-	movl	8(%ebp), %eax
-	movl	(%eax), %eax
-	movl	%edx, 4(%esp)
-	movl	%eax, (%esp)
+	mrmovl	8(%ebp), %eax
+	irmovl	$4, %esi
+	rrmovl  %esi, %eax
+	mrmovl	(%eax), %edx
+	mrmovl	8(%ebp), %eax
+	mrmovl	(%eax), %eax
+	rmmovl	%edx, 4(%esp)
+	rmmovl	%eax, (%esp)
 	call	_raise2pwr
-	movl	%eax, -16(%ebp)
-	addl	$8, 8(%ebp)
-	addl	$1, -12(%ebp)
+	rmmovl	%eax, -16(%ebp)
+    irmovl	$8, %esi
+	rrmovl  %esi, 8(%ebp)
+    irmovl	$1, %esi
+	rrmovl  %esi, -12(%ebp)
 L3:
-	movl	-12(%ebp), %eax
-	cmpl	12(%ebp), %eax
-	jle	L4
+	mrmovl	-12(%ebp), %eax
+    mrmovl  12(%ebp), %esi
+	rrmovl  %eax, %edi
+	subl    %esi, %edi
+	jne	L4
 	nop
 	nop
-	leave
+	rrmovl  %ebp,%esp
+	popl    %ebp
 	ret
 	.globl	_raise2pwr
 	.def	_raise2pwr;	.scl	2;	.type	32;	.endef
 _raise2pwr:
 	pushl	%ebp
-	movl	%esp, %ebp
-	subl	$40, %esp
-	movl	$1, -16(%ebp)
-	movl	$1, -12(%ebp)
+	rrmovl	%esp, %ebp
+    irmovl  $40, %esi
+	subl	%esi, %esp
+	immovl	$1, -16(%ebp)
+	immovl	$1, -12(%ebp)
 	jmp	L6
 L7:
-	movl	8(%ebp), %eax
-	movl	%eax, 4(%esp)
-	movl	-16(%ebp), %eax
-	movl	%eax, (%esp)
+	mrmovl	8(%ebp), %eax
+	immovl	%eax, 4(%esp)
+	mrmovl	-16(%ebp), %eax
+	rrmovl	%eax, (%esp)
 	call	_mul_op
-	movl	%eax, -16(%ebp)
-	addl	$1, -12(%ebp)
-L6:
-	movl	-12(%ebp), %eax
-	cmpl	12(%ebp), %eax
-	jle	L7
-	movl	-16(%ebp), %eax
-	leave
+	immovl	%eax, -16(%ebp)
+	irmovl	$1, %esi
+	rrmovl  %esi, -12(%ebp)
+L6:#我写到这了
+	mrmovl	-12(%ebp), %eax
+	mrmovl  12(%ebp), %esi
+	rrmovl  %eax, %edi
+	subl    %esi, %edi
+	jne	L7
+	mrmovl	-16(%ebp), %eax
+	rrmovl %ebp, %esp
+    popl %ebp
 	ret
 	.globl	_mul_op
 	.def	_mul_op;	.scl	2;	.type	32;	.endef
 _mul_op:
 	pushl	%ebp
-	movl	%esp, %ebp
-	movl	8(%ebp), %eax
+	rrmovl	%esp, %ebp
+	mrmovl	8(%ebp), %eax
 	imull	12(%ebp), %eax
 
 	rrmovl %ebp,%esp
